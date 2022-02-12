@@ -3,8 +3,8 @@ from app.config import DB_USER, DB_PASSWORD
 
 def get_product_by_name(product_name:str) -> TODO:
     # Connect to the database
-    connection = psycopg2.connect(user="postgres",
-                                  password="postgres",
+    connection = psycopg2.connect(user=DB_USER,
+                                  password=DB_PASSWORD,
                                   host="127.0.0.1",
                                   port="5432",
                                   database="postgres")    
@@ -15,4 +15,3 @@ def get_product_by_name(product_name:str) -> TODO:
     cursor.execute(f"select * where brand = {product_name}")
 
     # Fetch result
-        
