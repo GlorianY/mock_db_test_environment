@@ -7,12 +7,10 @@ services:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
       ports:
-        # The port mapped by Postgres is 5432 in the container. 
-        # Here, we use the port 5438 on the host machine
-        - '5438:5432'
+        - '5432:5432'
       volumes:
         - ./postgres-data:/var/lib/postgresql/data
         # copy the sql script to create tables
         - ./app/sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
-        # copy the sql script to fill tables
+        # copy the sql script to populate tables
         - ./app/sql/populate_table.sql:/docker-entrypoint-initdb.d/populate_table.sql
