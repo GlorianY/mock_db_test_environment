@@ -1,17 +1,30 @@
+import pandas as pd
 from psycopg2 import connect
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from app.config import DB_USER, DB_PASSWORD
 
-def get_product_by_name(product_name:str) -> TODO:
-    # Connect to the database
-    connection = psycopg2.connect(user=DB_USER,
-                                  password=DB_PASSWORD,
-                                  host="127.0.0.1",
-                                  port="5432",
-                                  database="postgres")    
+def create_pg_engine() -> Engine: 
+    """Create Postgres engine."""
+    PG_HOST = "db" # points to the DB container name
+    PG_USER = DB_USER
+    PG_PASSWORD = DB_PASSWORD
+    PG_PORT = "5432"
+    PG_DB_NAME = "postgres"
 
-    # Create a cursor to perform database operations
-    cursor = connection.cursor()
+    # Create the connection
+    engine = create_engine(f"postgresql://{PG_USER}:{DB_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DB_NAME}")
 
-    cursor.execute(f"select * where brand = {product_name}")
+    return engine
 
-    # Fetch result
+
+def get_product_by_brand(brand:str) -> pd.DataFrame:
+    """Get all product data which belong to a specified brand."""
+    engine = create_pg_engine()
+    
+    #df = pd.read_sql_query(f"SELECT * FROM product WHERE brand = {brand}",
+    #                       engine)
+    df = pd.read_sql_query(f"SELECT * FROM product",
+                           engine)
+
+    return df

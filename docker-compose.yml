@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-    postgres:
+    db:
       image: postgres:14.2
       restart: always
       environment: 
@@ -14,3 +14,8 @@ services:
         - ./app/sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
         # copy the sql script to populate tables
         - ./app/sql/populate_table.sql:/docker-entrypoint-initdb.d/populate_table.sql
+    test:
+      build: .
+      command: bash -c "pytest -v -s app/test"
+      depends_on:
+        - db
